@@ -3,6 +3,8 @@ Boomi Flow Atomsphere API Service
 
 This service allows you to integrate your Flows with the Boomi Atomsphere API enabling you to build DevOps flows for your Boomi Integrate environment.
 
+TODO: Needs refactoring for performance to avoid instantiating ServiceMetadata for each transaction. That needs to be cached upon service startup for faster reuse.
+
 The Atomsphere API is documented here: https://help.boomi.com/bundle/integration/page/r-atm-AtomSphere_API.html
 
 The service includes Data Actions for the Atomsphere API objects such as Atom, Execution Record and all others. Message Actions are also included for actions such as ExecuteProcess.

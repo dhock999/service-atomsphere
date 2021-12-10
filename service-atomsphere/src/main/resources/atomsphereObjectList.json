@@ -652,23 +652,25 @@
 		},
 		{
 			"name": "TradingPartnerComponent",
-			"primaryKey": "id",
+			"primaryKey": "componentId",
 			"supportsGet": true,
 			"supportsQuery": true,
 			"supportsCreate": true,
 			"supportsUpdate": true,
 			"supportsExecute": false,
-			"supportsDelete": true
+			"supportsDelete": true,
+			"queryFilterRequiredBug": true
 		},
 		{
 			"name": "TradingPartnerProcessingGroup",
-			"primaryKey": "id",
+			"primaryKey": "componentId",
 			"supportsGet": true,
 			"supportsQuery": true,
 			"supportsCreate": true,
 			"supportsUpdate": true,
 			"supportsExecute": false,
-			"supportsDelete": true
+			"supportsDelete": true,
+			"queryFilterRequiredBug": true
 		},
 		{
 			"name": "X12ConnectorRecord",

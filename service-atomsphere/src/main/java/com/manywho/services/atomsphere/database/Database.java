@@ -97,6 +97,9 @@ public class Database implements RawDatabase<ServiceConfiguration> {
 //			throw new RuntimeException("Offset pagination not supported when sorting is set. Please set your filter 'Number of records to return' to the maximum records required.");
 		
 		addFilterToBody(filter, objectDataType, queryBody);
+		if (queryBody.length()==0 && serviceMetadata.requiresQueryFilter(objectDataType.getDeveloperName()))
+			queryBody.put("QueryFilter", new JSONObject());
+				
 		logger.fine("WHERE params: " + queryBody.toString());
 		JSONObject response = AtomsphereAPI.executeAPI(configuration, user.getToken(), objectDataType.getDeveloperName(), "POST", "query", queryBody.toString(), serviceMetadata.isAPIManagerEntity(objectDataType.getDeveloperName()));
 		if (response.has("result"))
@@ -173,6 +176,8 @@ public class Database implements RawDatabase<ServiceConfiguration> {
 					JSONArray nestedExpressions = new JSONArray();
 					for (ListFilterWhere where : filter.getWhere())
 					{
+						//TODO How can we get the type of the argument??
+
 						String operator = convertCriteriaType(where.getCriteriaType());
 						if (operator == null) throw new RuntimeException("Query operator not supported by Atomsphere API - " + where.getCriteriaType().name());
 						JSONObject nestedExpression = new JSONObject();
@@ -362,7 +367,7 @@ public class Database implements RawDatabase<ServiceConfiguration> {
                            	properties.add(property);           			
                			}
            			} else {
-           				logger.info("addMObjectProperties - typeElement NULL");
+           				logger.info("?????addMObjectProperties - typeElement NULL");
            				//iterate objects and add each as a property
            				this.addMObjectProperties(mObject, propertyObject);
            			}
@@ -378,8 +383,19 @@ public class Database implements RawDatabase<ServiceConfiguration> {
            			{
                			for (int i=0; i<array.length(); i++)
                			{
-               				MObject item = jsonToMObject(array.getJSONObject(i));
-               				mObjects.add(item);
+               				Object oItem = array.get(i);
+               				if (oItem instanceof JSONObject)
+               				{
+                   				MObject item = jsonToMObject(array.getJSONObject(i));
+                   				mObjects.add(item);
+               				} else {
+               					//TODO EDI Connector Record CustomFields "@type": "JAXBElement", have stuff like 
+//               					"name": [
+//            					"QName",
+//            					"{http://api.platform.boomi.com/}Alt_Doc_Num"
+ //           				],
+               					//TODO we will exclude for now but maybe make it a string value someday?
+               				}
                			}
                			property.setObjectData(mObjects);
                        	properties.add(property);
@@ -415,7 +431,7 @@ public class Database implements RawDatabase<ServiceConfiguration> {
     
     boolean isNumber(String value)
     {
-    	return value.startsWith("[\"Long") || value.startsWith("[\"Double"); 
+    	return value.startsWith("[\"Long") || value.startsWith("[\"Double") || value.startsWith("[\"BigInteger"); 
     }
     
     //Process Response

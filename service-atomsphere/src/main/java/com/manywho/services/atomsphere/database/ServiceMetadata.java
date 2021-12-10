@@ -100,6 +100,14 @@ public class ServiceMetadata {
 		return entry.getString("primaryKey");
 	}
 
+	public boolean requiresQueryFilter(String entityName)
+	{
+		JSONObject entry = getObjectListEntry(entityName);
+		if (entry==null)
+			return false;
+		return entry.has("queryFilterRequiredBug") && entry.getBoolean("queryFilterRequiredBug");
+	}
+
 	public List<TypeElement> getAllTypeElements()
 	{
 		return _typeElements;
@@ -124,12 +132,12 @@ public class ServiceMetadata {
 			JSONObject entity = (JSONObject)obj;
 			String name = entity.getString("name");			
 			this.getTypeElementsForObject(null, name, this.atomsphereXSDTopElement, "Atomsphere");
-			if ("Component".contentEquals(name))
-			{
-				//TODO repeat this for every component type
-				//TODO process shapes have "configuration" which needs expanding for every shape type...yuck
-				injectComponentType("process");
-			}
+//			if ("Component".contentEquals(name))
+//			{
+//				//TODO repeat this for every component type
+//				//TODO process shapes have "configuration" which needs expanding for every shape type...yuck
+//				injectComponentType("process");
+//			}
  		}    
 		for (Object obj : apimObjectList)
 		{
@@ -193,7 +201,7 @@ public class ServiceMetadata {
        		if (findTypeElement(developerName)==null) //No duplicates
        			_typeElements.add(typeElement);
        		else
-       			logger.info("Type used multiple times: " + typeName + " " + parentType);
+       			logger.fine("Type used multiple times: " + typeName + " " + parentType);
        		success = true;
        	}
        	else
@@ -242,7 +250,7 @@ public class ServiceMetadata {
 					{
 						NodeList complexTypes = ((Element)xsdElement).getElementsByTagName("xs:complexType");
 						complexType = (Element) complexTypes.item(0);
-						logger.info(complexType.toString());
+						logger.fine(complexType.toString());
 						break;
 					}
 				}
@@ -295,7 +303,7 @@ public class ServiceMetadata {
 		String developerName = xsdElement.getAttributes().getNamedItem("name").getNodeValue();
 		if (xsdElement.getAttributes().getNamedItem("type")==null)
 		{
-			logger.warning("addPropertyAndBindingFromXSD" + typeName + " " + developerName );
+			logger.fine("addPropertyAndBindingFromXSD" + typeName + " " + developerName );
 			return;
 		}
 		String xsdType = xsdElement.getAttributes().getNamedItem("type").getNodeValue();

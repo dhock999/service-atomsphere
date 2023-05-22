@@ -66,6 +66,10 @@ Server Public Certificate |  |  | Specify a URL Server Certificate for server ve
 
 Contributions are welcome to the project - whether they are feature requests, improvements or bug fixes! Refer to [CONTRIBUTING.md](CONTRIBUTING.md) for our contribution requirements.
 
+The metadata is driven from files 
+https://api.boomi.com/api/soap/v1/boomi_davehock-T9DOG4?xsd=1
+https://api.boomi.com/apim/api/soap/v1/boomi_davehock-T9DOG4?xsd=2
+
 ## License
 
 This SDK is released under the [MIT License](http://opensource.org/licenses/mit-license.php).

@@ -236,9 +236,9 @@
 			"supportsGet": true,
 			"supportsQuery": true,
 			"supportsCreate": false,
-			"supportsUpdate": false,
+			"supportsUpdate": true,
 			"supportsExecute": false,
-			"supportsDelete": false
+			"supportsDelete": true
 		},
 		{
 			"name": "CustomTrackedField",
@@ -445,10 +445,10 @@
 			"primaryKey": "id",
 			"supportsGet": true,
 			"supportsQuery": true,
-			"supportsCreate": false,
-			"supportsUpdate": false,
+			"supportsCreate": true,
+			"supportsUpdate": true,
 			"supportsExecute": false,
-			"supportsDelete": false
+			"supportsDelete": true
 		},
 		{
 			"name": "HL7ConnectorRecord",

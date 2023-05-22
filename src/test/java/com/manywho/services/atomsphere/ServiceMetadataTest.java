@@ -34,24 +34,23 @@ public class ServiceMetadataTest {
 		for (TypeElement typeElement:typeElements)
 		{
 				System.out.println(String.format("Type DeveloperName: %s Id: %s",typeElement.getDeveloperName(), typeElement.getId()));
-				for (TypeElementProperty typeElementProperty : typeElement.getProperties())
-				{
-//					if (typeElementProperty.getDeveloperName()!=null)
-					System.out.println(String.format(" Property developerName: %s ID: %s; contentType.Name: %s; typeElementDeveloperName: %s; typeElementId: %s"
-							, typeElementProperty.getDeveloperName()
-							, typeElementProperty.getId()
-							, typeElementProperty.getContentType().name()
-							, typeElementProperty.getTypeElementDeveloperName()
-							, typeElementProperty.getTypeElementId()));
-				}
-				for (TypeElementBinding typeElementBinding : typeElement.getBindings())
-				{
-					System.out.println( " BINDING " + typeElementBinding.getDeveloperName());
-					for (TypeElementPropertyBinding typeElementPropertyBinding:typeElementBinding.getPropertyBindings())
-					{
-						System.out.println(String.format("    TypeElementPropertyDeveloperName: %s;  TypeElementPropertyId: %s", typeElementPropertyBinding.getTypeElementPropertyDeveloperName(), typeElementPropertyBinding.getTypeElementPropertyId()));
-					}
-				}
+//				for (TypeElementProperty typeElementProperty : typeElement.getProperties())
+//				{
+//					System.out.println(String.format(" Property developerName: %s; ID: %s; contentType.Name: %s; typeElementDeveloperName: %s; typeElementId: %s"
+//							, typeElementProperty.getDeveloperName()
+//							, typeElementProperty.getId()
+//							, typeElementProperty.getContentType().name()
+//							, typeElementProperty.getTypeElementDeveloperName()
+//							, typeElementProperty.getTypeElementId()));
+//				}
+//				for (TypeElementBinding typeElementBinding : typeElement.getBindings())
+//				{
+//					System.out.println( " BINDING " + typeElementBinding.getDeveloperName());
+//					for (TypeElementPropertyBinding typeElementPropertyBinding:typeElementBinding.getPropertyBindings())
+//					{
+//						System.out.println(String.format("    TypeElementPropertyDeveloperName: %s;  TypeElementPropertyId: %s", typeElementPropertyBinding.getTypeElementPropertyDeveloperName(), typeElementPropertyBinding.getTypeElementPropertyId()));
+//					}
+//				}
 		}
 		assertTrue(typeElements.size()>0);
 	}

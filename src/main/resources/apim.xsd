@@ -28,17 +28,37 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="KeyCallCount"><xs:annotation><xs:appinfo><filter ignore="true" xmlns="http://www.boomi.com/connector/annotation"><field name="apiKey"/><field name="timeBlock"/><field name="httpStatus"/><field name="environmentId"/><field name="count"/></filter></xs:appinfo></xs:annotation>
+  <xs:complexType name="AuthenticationSourceRole"><xs:annotation><xs:appinfo><filter ignore="true" xmlns="http://www.boomi.com/connector/annotation"><field name="roleName"/><field name="authSourceId"/></filter></xs:appinfo></xs:annotation>
     <xs:complexContent>
       <xs:extension base="tns:ApimBaseType">
-        <xs:sequence/>
-        <xs:attribute name="apiKey" type="xs:string"/>
-        <xs:attribute name="timeBlock" type="xs:dateTime"/>
-        <xs:attribute name="httpStatus" type="xs:int"/>
-        <xs:attribute name="environmentId" type="xs:string"/>
-        <xs:attribute name="count" type="xs:long"/>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="roleId" type="xs:string"/>
+        <xs:attribute name="authSourceId" type="xs:string"/>
+        <xs:attribute name="roleName" type="xs:string"/>
       </xs:extension>
     </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AuthenticationSourceGroup"><xs:annotation><xs:appinfo><filter ignore="true" xmlns="http://www.boomi.com/connector/annotation"><field name="groupName"/><field name="authSourceId"/><field name="roleName"/></filter></xs:appinfo></xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ApimBaseType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="roles" type="tns:AuthSourceRole"/>
+        </xs:sequence>
+        <xs:attribute name="groupId" type="xs:string"/>
+        <xs:attribute name="authSourceId" type="xs:string"/>
+        <xs:attribute name="groupName" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AuthSourceRole">
+    <xs:sequence/>
+    <xs:attribute name="roleId" type="xs:string"/>
+    <xs:attribute name="roleName" type="xs:string"/>
   </xs:complexType>
 
   <xs:complexType name="ApiKey">
@@ -93,15 +113,32 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="AuthenticationSourceRole"><xs:annotation><xs:appinfo><filter ignore="true" xmlns="http://www.boomi.com/connector/annotation"><field name="roleName"/><field name="authSourceId"/></filter></xs:appinfo></xs:annotation>
+  <xs:complexType name="KeyCallCount"><xs:annotation><xs:appinfo><filter ignore="true" xmlns="http://www.boomi.com/connector/annotation"><field name="apiKey"/><field name="timeBlock"/><field name="httpStatus"/><field name="environmentId"/><field name="count"/></filter></xs:appinfo></xs:annotation>
     <xs:complexContent>
       <xs:extension base="tns:ApimBaseType">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="description" type="xs:string"/>
-        </xs:sequence>
-        <xs:attribute name="roleId" type="xs:string"/>
-        <xs:attribute name="authSourceId" type="xs:string"/>
-        <xs:attribute name="roleName" type="xs:string"/>
+        <xs:sequence/>
+        <xs:attribute name="apiKey" type="xs:string"/>
+        <xs:attribute name="timeBlock" type="xs:dateTime"/>
+        <xs:attribute name="httpStatus" type="xs:int"/>
+        <xs:attribute name="environmentId" type="xs:string"/>
+        <xs:attribute name="count" type="xs:long"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Plan">
+    <xs:complexContent>
+      <xs:extension base="tns:ApimBaseType">
+        <xs:sequence/>
+        <xs:attribute name="planId" type="xs:string"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="description" type="xs:string"/>
+        <xs:attribute name="maxMessageSize" type="xs:long"/>
+        <xs:attribute name="rateLimit" type="xs:long"/>
+        <xs:attribute name="rateLimitUnit" type="tns:RateLimitUnit"/>
+        <xs:attribute name="quotaLimit" type="xs:long"/>
+        <xs:attribute name="quotaLimitUnit" type="tns:QuotaLimitUnit"/>
+        <xs:attribute name="status" type="xs:string"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -126,26 +163,6 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="AuthenticationSourceGroup"><xs:annotation><xs:appinfo><filter ignore="true" xmlns="http://www.boomi.com/connector/annotation"><field name="groupName"/><field name="authSourceId"/><field name="roleName"/></filter></xs:appinfo></xs:annotation>
-    <xs:complexContent>
-      <xs:extension base="tns:ApimBaseType">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="description" type="xs:string"/>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="roles" type="tns:AuthSourceRole"/>
-        </xs:sequence>
-        <xs:attribute name="groupId" type="xs:string"/>
-        <xs:attribute name="authSourceId" type="xs:string"/>
-        <xs:attribute name="groupName" type="xs:string"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="AuthSourceRole">
-    <xs:sequence/>
-    <xs:attribute name="roleId" type="xs:string"/>
-    <xs:attribute name="roleName" type="xs:string"/>
-  </xs:complexType>
-
   <xs:complexType name="Contract">
     <xs:complexContent>
       <xs:extension base="tns:ApimBaseType">
@@ -160,37 +177,6 @@
         <xs:attribute name="quotaLimit" type="xs:long"/>
         <xs:attribute name="quotaLimitUnit" type="tns:QuotaLimitUnit"/>
         <xs:attribute name="deleted" type="xs:boolean"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="AuthenticationSource"><xs:annotation><xs:appinfo><filter ignore="true" xmlns="http://www.boomi.com/connector/annotation"><field name="name"/><field name="type"/></filter></xs:appinfo></xs:annotation>
-    <xs:complexContent>
-      <xs:extension base="tns:ApimBaseType">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="description" type="xs:string"/>
-        </xs:sequence>
-        <xs:attribute name="authSourceId" type="xs:string"/>
-        <xs:attribute name="name" type="xs:string"/>
-        <xs:attribute name="type" type="tns:AuthenticationSourceType"/>
-        <xs:attribute name="brokerIsCurrent" type="xs:boolean"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="Plan">
-    <xs:complexContent>
-      <xs:extension base="tns:ApimBaseType">
-        <xs:sequence/>
-        <xs:attribute name="planId" type="xs:string"/>
-        <xs:attribute name="name" type="xs:string"/>
-        <xs:attribute name="description" type="xs:string"/>
-        <xs:attribute name="maxMessageSize" type="xs:long"/>
-        <xs:attribute name="rateLimit" type="xs:long"/>
-        <xs:attribute name="rateLimitUnit" type="tns:RateLimitUnit"/>
-        <xs:attribute name="quotaLimit" type="xs:long"/>
-        <xs:attribute name="quotaLimitUnit" type="tns:QuotaLimitUnit"/>
-        <xs:attribute name="status" type="xs:string"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -227,6 +213,20 @@
   <xs:complexType name="ODataInfo">
     <xs:sequence/>
     <xs:attribute name="serviceUrl" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="AuthenticationSource"><xs:annotation><xs:appinfo><filter ignore="true" xmlns="http://www.boomi.com/connector/annotation"><field name="name"/><field name="type"/></filter></xs:appinfo></xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ApimBaseType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="authSourceId" type="xs:string"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="type" type="tns:AuthenticationSourceType"/>
+        <xs:attribute name="brokerIsCurrent" type="xs:boolean"/>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 
   <xs:complexType name="ApimBulkRequest">
@@ -276,6 +276,8 @@
       <xs:enumeration value="OPENID"/>
       <xs:enumeration value="SAML"/>
       <xs:enumeration value="BASIC"/>
+      <xs:enumeration value="BASIC_GATEWAY"/>
+      <xs:enumeration value="JWT"/>
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>

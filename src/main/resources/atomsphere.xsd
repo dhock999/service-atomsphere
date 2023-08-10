@@ -81,9 +81,15 @@
 
   <xs:element name="CloudMigration" type="tns:CloudMigration"/>
 
+  <xs:element name="CompDiffConfig" type="tns:CompDiffConfig"/>
+
   <xs:element name="Component" type="tns:Component"/>
 
   <xs:element name="ComponentAtomAttachment" type="tns:ComponentAtomAttachment"><xs:annotation><xs:documentation>You are using a deprecated API endpoint. It will remain available until Sat, 13 Feb 2021 05:00:00 GMT. For more information see https://help.boomi.com/bundle/integration/page/int-Component_Atom_Attachment_object_Legacy_deployment_410826be-78da-4f46-9aad-9c9a5c91bf08.html .<xs:linkRel>deprecation</xs:linkRel><xs:linkUrl>https://help.boomi.com/bundle/integration/page/int-Component_Atom_Attachment_object_Legacy_deployment_410826be-78da-4f46-9aad-9c9a5c91bf08.html</xs:linkUrl><xs:version>1.0</xs:version><xs:sunsetDate>Sat Feb 13 00:00:00 EST 2021</xs:sunsetDate><xs:deprecatedDate>Sat Oct 12 00:00:00 EDT 2019</xs:deprecatedDate></xs:documentation></xs:annotation></xs:element>
+
+  <xs:element name="ComponentDiffRequest" type="tns:ComponentDiffRequest"/>
+
+  <xs:element name="ComponentDiffResponse" type="tns:ComponentDiffResponse"/>
 
   <xs:element name="ComponentEnvironmentAttachment" type="tns:ComponentEnvironmentAttachment"><xs:annotation><xs:documentation>You are using a deprecated API endpoint. It will remain available until . For more information see https://help.boomi.com/bundle/integration/page/int-Component_Environment_Attachment_object_Legacy_c3a42b88-9fe6-4194-b5d9-fbfa1fd5c1c4.html .<xs:linkRel>deprecation</xs:linkRel><xs:linkUrl>https://help.boomi.com/bundle/integration/page/int-Component_Environment_Attachment_object_Legacy_c3a42b88-9fe6-4194-b5d9-fbfa1fd5c1c4.html</xs:linkUrl><xs:version>1.0</xs:version><xs:sunsetDate/><xs:deprecatedDate>Mon Mar 16 00:00:00 EDT 2020</xs:deprecatedDate></xs:documentation></xs:annotation></xs:element>
 
@@ -183,7 +189,11 @@
 
   <xs:element name="GenericConnectorRecord" type="tns:GenericConnectorRecord"/>
 
+  <xs:element name="GenericDiff" type="tns:GenericDiff"/>
+
   <xs:element name="InstallPackagedComponent" type="tns:InstallPackagedComponent"/>
+
+  <xs:element name="InstallPackagedComponentSummary" type="tns:InstallPackagedComponentSummary"/>
 
   <xs:element name="InstallerToken" type="tns:InstallerToken"/>
 
@@ -758,7 +768,7 @@
     <xs:attribute name="value" type="xs:string"/>
   </xs:complexType>
 
-  <xs:complexType name="SharedCommunicationChannelComponent">
+  <xs:complexType name="SharedCommunicationChannelComponent"><xs:annotation><xs:appinfo><filter ignore="true" xmlns="http://www.boomi.com/connector/annotation"><field name="name"/><field name="communicationType"/></filter></xs:appinfo></xs:annotation>
     <xs:complexContent>
       <xs:extension base="tns:BaseType">
         <xs:sequence>
@@ -814,6 +824,7 @@
       <xs:element name="sslCertificate" type="tns:PublicCertificate"/>
       <xs:element name="clientSSLCertificate" type="tns:PrivateCertificate"/>
       <xs:element minOccurs="0" name="AuthSettings" type="tns:AS2BasicAuthInfo"/>
+      <xs:element default="false" name="verifyHostname" type="xs:boolean"/>
     </xs:sequence>
     <xs:attribute name="useDefaultSettings" type="xs:boolean"/>
     <xs:attribute name="authenticationType" type="tns:AS2AuthenticationType"/>
@@ -992,6 +1003,7 @@
           <xs:attribute name="tokenSecret" type="xs:string"/>
           <xs:attribute name="suppressBlankAccessToken" type="xs:boolean"/>
           <xs:attribute name="realm" type="xs:string"/>
+          <xs:attribute name="signatureMethod" type="tns:SignatureMethod"/>
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="HTTPOAuth2Settings" type="tns:HTTPOAuth2Settings"/>
@@ -1386,7 +1398,23 @@
     <xs:sequence>
       <xs:element name="host" type="xs:string"/>
       <xs:element name="port" type="xs:integer"/>
+      <xs:element default="0" name="maxRetry" type="xs:int"/>
+      <xs:element default="120" name="sendTimeout" type="xs:int"/>
+      <xs:element default="120" name="receiveTimeout" type="xs:int"/>
+      <xs:element default="false" name="haltTimeout" type="xs:boolean"/>
+      <xs:element default="false" name="persistent" type="xs:boolean"/>
+      <xs:element default="10" name="maxConnections" type="xs:int"/>
+      <xs:element default="60" name="inactivityTimeout" type="xs:int"/>
+      <xs:element name="MLLPSSLOptions" type="tns:MLLPSSLOptions"/>
     </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="MLLPSSLOptions">
+    <xs:sequence/>
+    <xs:attribute name="useSSL" type="xs:boolean"/>
+    <xs:attribute name="sslAlias" type="xs:string"/>
+    <xs:attribute name="useClientSSL" type="xs:boolean"/>
+    <xs:attribute name="clientSSLAlias" type="xs:string"/>
   </xs:complexType>
 
   <xs:complexType name="PartnerArchiving">
@@ -1576,6 +1604,18 @@
                 <xs:element minOccurs="0" name="bridgeModeExecutions" type="tns:Feature"/>
                 <xs:element minOccurs="0" name="connectorApiAccess" type="tns:Feature"/>
                 <xs:element minOccurs="0" name="accountLibraryQuota" type="tns:Feature"/>
+                <xs:element minOccurs="0" name="dataCategory" type="tns:Feature"/>
+                <xs:element minOccurs="0" name="localization" type="tns:Feature"/>
+                <xs:element minOccurs="0" name="allowAuthenticationBroker" type="tns:Feature"/>
+                <xs:element minOccurs="0" name="apiPolicyAdapterUI" type="tns:Feature"/>
+                <xs:element minOccurs="0" name="componentDiff" type="tns:Feature"/>
+                <xs:element minOccurs="0" name="dataConnectorCapacityTier" type="tns:Feature"/>
+                <xs:element minOccurs="0" name="dataApimCapacityTier" type="tns:Feature"/>
+                <xs:element minOccurs="0" name="dataHubCapacityTier" type="tns:Feature"/>
+                <xs:element minOccurs="0" name="dataEventStreamsCapacityTier" type="tns:Feature"/>
+                <xs:element minOccurs="0" name="dataApimLicenseTier" type="tns:Feature"/>
+                <xs:element minOccurs="0" name="dataHubLicenseTier" type="tns:Feature"/>
+                <xs:element minOccurs="0" name="dataEventStreamsLicenseTier" type="tns:Feature"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
@@ -1904,7 +1944,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="TradingPartnerComponent"><xs:annotation><xs:appinfo><filter ignore="true" xmlns="http://www.boomi.com/connector/annotation"><field name="name"/><field name="classification"/><field name="standard"/><field name="identifier"/><field name="as2"/><field name="disk"/><field name="ftp"/><field name="mllp"/><field name="sftp"/><field name="http"/></filter></xs:appinfo></xs:annotation>
+  <xs:complexType name="TradingPartnerComponent"><xs:annotation><xs:appinfo><filter ignore="true" xmlns="http://www.boomi.com/connector/annotation"><field name="name"/><field name="classification"/><field name="standard"/><field name="identifier"/><field name="as2"/><field name="disk"/><field name="ftp"/><field name="mllp"/><field name="sftp"/><field name="http"/><field name="oftp"/></filter></xs:appinfo></xs:annotation>
     <xs:complexContent>
       <xs:extension base="tns:BaseType">
         <xs:sequence>
@@ -3129,6 +3169,55 @@
     </xs:complexContent>
   </xs:complexType>
 
+  <xs:complexType name="InstallPackagedComponentSummary">
+    <xs:complexContent>
+      <xs:extension base="tns:BaseType">
+        <xs:sequence/>
+        <xs:attribute name="copiedComponentId" type="xs:string"/>
+        <xs:attribute name="copiedComponentVersion" type="xs:int"/>
+        <xs:attribute name="folderId" type="xs:long"/>
+        <xs:attribute name="folderPath" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ComponentDiffRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:BaseType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CompDiffConfig" type="tns:CompDiffConfig"/>
+        </xs:sequence>
+        <xs:attribute name="componentId" type="xs:string" use="required"/>
+        <xs:attribute name="sourceVersion" type="xs:int" use="required"/>
+        <xs:attribute name="targetVersion" type="xs:int" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="CompDiffConfig">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="CompDiffElement" type="tns:CompDiffElement"/>
+    </xs:sequence>
+    <xs:attribute name="componentType" type="tns:ComponentType"/>
+  </xs:complexType>
+
+  <xs:complexType name="CompDiffElement">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="CompDiffAttribute" type="tns:CompDiffAttribute"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="parent" type="xs:string"/>
+    <xs:attribute name="ignored" type="xs:boolean"/>
+    <xs:attribute name="ordered" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="CompDiffAttribute">
+    <xs:sequence/>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="ignored" type="xs:boolean"/>
+    <xs:attribute name="idpart" type="xs:boolean"/>
+  </xs:complexType>
+
   <xs:complexType name="AsyncOperationStatus">
     <xs:complexContent>
       <xs:extension base="tns:BaseType">
@@ -4247,6 +4336,71 @@
     </xs:complexContent>
   </xs:complexType>
 
+  <xs:complexType name="ComponentDiffResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:BaseType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="GenericDiff" type="tns:GenericDiff"/>
+        </xs:sequence>
+        <xs:attribute name="message" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="GenericDiff">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="addition" type="tns:ChangeAggregation"/>
+      <xs:element minOccurs="0" name="deletion" type="tns:ChangeAggregation"/>
+      <xs:element minOccurs="0" name="modification" type="tns:ChangeAggregation"/>
+    </xs:sequence>
+    <xs:attribute name="componentType" type="xs:string"/>
+    <xs:attribute name="componentId" type="xs:string"/>
+    <xs:attribute name="srcVersion" type="xs:string"/>
+    <xs:attribute name="dstVersion" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="ChangeAggregation">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="change" type="tns:Change"/>
+    </xs:sequence>
+    <xs:attribute name="total" type="xs:int"/>
+  </xs:complexType>
+
+  <xs:complexType name="Change">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="elementKey" type="tns:ChangeKey"/>
+      <xs:element minOccurs="0" name="newValue" type="tns:ChangeValue"/>
+      <xs:element minOccurs="0" name="oldValue" type="tns:ChangeValue"/>
+      <xs:element minOccurs="0" name="value" type="tns:ChangeValue"/>
+    </xs:sequence>
+    <xs:attribute name="type" type="tns:ChangeType"/>
+    <xs:attribute name="changedParticleName" type="xs:string"/>
+    <xs:attribute name="message" type="xs:string"/>
+    <xs:attribute name="oldOrder" type="xs:int"/>
+    <xs:attribute name="newOrder" type="xs:int"/>
+  </xs:complexType>
+
+  <xs:complexType name="ChangeKey">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="key-part" type="tns:KeyPair"/>
+    </xs:sequence>
+    <xs:attribute name="elementName" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="KeyPair">
+    <xs:sequence/>
+    <xs:attribute name="attribute" type="xs:string"/>
+    <xs:attribute name="value" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="ChangeValue">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="xpath" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
   <xs:complexType name="ConnectorVersionDelete">
     <xs:complexContent>
       <xs:extension base="tns:BaseType">
@@ -5302,23 +5456,6 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="OFTPConnectorRecord">
-    <xs:complexContent>
-      <xs:extension base="tns:ConnectorRecord">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="sfiddsn" type="xs:string"/>
-          <xs:element minOccurs="0" name="sfiddate" type="xs:string"/>
-          <xs:element minOccurs="0" name="sfidtime" type="xs:string"/>
-          <xs:element minOccurs="0" name="ssidcode" type="xs:string"/>
-          <xs:element minOccurs="0" name="sfiddest" type="xs:string"/>
-          <xs:element minOccurs="0" name="status" type="xs:string"/>
-          <xs:element minOccurs="0" name="nareas" type="xs:string"/>
-          <xs:element minOccurs="0" name="nareast" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
   <xs:complexType name="AsyncOperationResult">
     <xs:sequence>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="result" type="tns:BaseType"/>
@@ -5380,6 +5517,23 @@
       <xs:extension base="tns:MapExtensionsSummary">
         <xs:sequence/>
         <xs:attribute name="atomId" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OFTP2ConnectorRecord">
+    <xs:complexContent>
+      <xs:extension base="tns:ConnectorRecord">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="sfiddsn" type="xs:string"/>
+          <xs:element minOccurs="0" name="sfiddate" type="xs:string"/>
+          <xs:element minOccurs="0" name="sfidtime" type="xs:string"/>
+          <xs:element minOccurs="0" name="ssidcode" type="xs:string"/>
+          <xs:element minOccurs="0" name="sfiddest" type="xs:string"/>
+          <xs:element minOccurs="0" name="status" type="xs:string"/>
+          <xs:element minOccurs="0" name="nareas" type="xs:string"/>
+          <xs:element minOccurs="0" name="nareast" type="xs:string"/>
+        </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -6047,6 +6201,13 @@
       <xs:enumeration value="over"/>
       <xs:enumeration value="append"/>
       <xs:enumeration value="abort"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="SignatureMethod">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SHA1"/>
+      <xs:enumeration value="SHA256"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -6851,6 +7012,40 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="ComponentType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="certificate"/>
+      <xs:enumeration value="connector-action"/>
+      <xs:enumeration value="connector-settings"/>
+      <xs:enumeration value="crossref"/>
+      <xs:enumeration value="documentcache"/>
+      <xs:enumeration value="transform.map"/>
+      <xs:enumeration value="transform.function"/>
+      <xs:enumeration value="certificate.pgp"/>
+      <xs:enumeration value="process"/>
+      <xs:enumeration value="processproperty"/>
+      <xs:enumeration value="profile.db"/>
+      <xs:enumeration value="profile.edi"/>
+      <xs:enumeration value="profile.flatfile"/>
+      <xs:enumeration value="profile.xml"/>
+      <xs:enumeration value="profile.json"/>
+      <xs:enumeration value="queue"/>
+      <xs:enumeration value="tradingpartner"/>
+      <xs:enumeration value="tpgroup"/>
+      <xs:enumeration value="tporganization"/>
+      <xs:enumeration value="tpcommoptions"/>
+      <xs:enumeration value="webservice"/>
+      <xs:enumeration value="webservice.external"/>
+      <xs:enumeration value="processroute"/>
+      <xs:enumeration value="customlibrary"/>
+      <xs:enumeration value="edistandard"/>
+      <xs:enumeration value="flowservice"/>
+      <xs:enumeration value="script.processing"/>
+      <xs:enumeration value="script.mapping"/>
+      <xs:enumeration value="xslt"/>
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="DocumentStatus">
     <xs:restriction base="xs:string">
       <xs:enumeration value="ANY"/>
@@ -6949,37 +7144,11 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="ComponentType">
+  <xs:simpleType name="ChangeType">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="certificate"/>
-      <xs:enumeration value="connector-action"/>
-      <xs:enumeration value="connector-settings"/>
-      <xs:enumeration value="crossref"/>
-      <xs:enumeration value="documentcache"/>
-      <xs:enumeration value="transform.map"/>
-      <xs:enumeration value="transform.function"/>
-      <xs:enumeration value="certificate.pgp"/>
-      <xs:enumeration value="process"/>
-      <xs:enumeration value="processproperty"/>
-      <xs:enumeration value="profile.db"/>
-      <xs:enumeration value="profile.edi"/>
-      <xs:enumeration value="profile.flatfile"/>
-      <xs:enumeration value="profile.xml"/>
-      <xs:enumeration value="profile.json"/>
-      <xs:enumeration value="queue"/>
-      <xs:enumeration value="tradingpartner"/>
-      <xs:enumeration value="tpgroup"/>
-      <xs:enumeration value="tporganization"/>
-      <xs:enumeration value="tpcommoptions"/>
-      <xs:enumeration value="webservice"/>
-      <xs:enumeration value="webservice.external"/>
-      <xs:enumeration value="processroute"/>
-      <xs:enumeration value="customlibrary"/>
-      <xs:enumeration value="edistandard"/>
-      <xs:enumeration value="flowservice"/>
-      <xs:enumeration value="script.processing"/>
-      <xs:enumeration value="script.mapping"/>
-      <xs:enumeration value="xslt"/>
+      <xs:enumeration value="attribute"/>
+      <xs:enumeration value="element"/>
+      <xs:enumeration value="order"/>
     </xs:restriction>
   </xs:simpleType>
 

@@ -93,6 +93,16 @@
 			"supportsDelete": true
 		},
 		{
+			"name": "PlanUsage",
+			"primaryKey": "planId",
+			"supportsGet": true,
+			"supportsQuery": false,
+			"supportsCreate": false,
+			"supportsUpdate": false,
+			"supportsExecute": false,
+			"supportsDelete": false
+		},
+		{
 			"name": "PublishedApi",
 			"primaryKey": "",
 			"supportsGet": false,

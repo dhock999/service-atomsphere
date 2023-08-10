@@ -23,6 +23,6 @@ public class Application extends Servlet3Server  {
         server.addModule(new ApplicationAtomsphereModule());
         server.setApplication(Application.class);
         server.start(); //default 8080
-        //server.start("/api/atomsphere/2",8085);
+//        server.start("/",8089);
     }
 }

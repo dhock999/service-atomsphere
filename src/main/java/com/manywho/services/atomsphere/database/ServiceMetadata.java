@@ -34,9 +34,9 @@ public class ServiceMetadata {
 	Logger logger;
 	List<TypeElement> _typeElements;
 //    private static final Logger LOGGER = LoggerFactory.getLogger(Database.class);
-	static final String atomsphereXSDFile = "atomsphere.xsd";
+	static final String atomsphereXSDFile = "atomsphere.xsd"; //https://api.boomi.com/api/soap/v1/boomi_davehock-T9DOG4?xsd=1
 	static final String atomsphereObjectListFile = "atomsphereObjectList.json";
-	static final String apimXSDFile = "apim.xsd"; //https://api.boomi.com/apim/api/soap/v1/boomi_davehock-T9DOG4?xsd=3
+	static final String apimXSDFile = "apim.xsd"; //https://api.boomi.com/apim/api/soap/v1/boomi_davehock-T9DOG4?xsd=2
 	//TODO can we get the object list from the top level elements of the xsd? Still need a way to designate the odd primary key/id though
 	static final String apimObjectListFile = "apimObjectList.json";
 	String _componentType = null;

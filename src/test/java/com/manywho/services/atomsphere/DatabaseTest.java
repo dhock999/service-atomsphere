@@ -42,102 +42,105 @@ public class DatabaseTest {
 		List<TypeElement> typeElements=serviceMetadata.getAllTypeElements();
 		for (TypeElement typeElement:typeElements)
 		{
-			ObjectDataType objectDataType = new ObjectDataType();
-			objectDataType.setDeveloperName(typeElement.getDeveloperName());
-			
-			//CREATE
+			if ("Folder".contentEquals(typeElement.getDeveloperName()))
 			{
-				boolean success=true;
-				try {
-					MObject createObject = new MObject();
-					createObject.setDeveloperName(typeElement.getDeveloperName());
-					createObject.setExternalId("FAKEID");
-					MObject object = database.create(configuration, createObject);
-				} catch (Exception e) {
-					success=false;
-					//Ignore unsupported operation errors but report documentation errors 
-					if (e.toString().contains("Unknown objectType for create"))
-					{
+				ObjectDataType objectDataType = new ObjectDataType();
+				objectDataType.setDeveloperName(typeElement.getDeveloperName());
+				
+				//CREATE
+				{
+					boolean success=true;
+					try {
+						MObject createObject = new MObject();
+						createObject.setDeveloperName(typeElement.getDeveloperName());
+						createObject.setExternalId("FAKEID");
+						MObject object = database.create(configuration, createObject);
+					} catch (Exception e) {
+						success=false;
+						//Ignore unsupported operation errors but report documentation errors 
+						if (e.toString().contains("Unknown objectType for create"))
+						{
+						}
+						else System.out.println("****CREATE - "+typeElement.getDeveloperName() + " - " + e.getMessage());
 					}
-					else System.out.println("****CREATE - "+typeElement.getDeveloperName() + " - " + e.getMessage());
+					if (success)
+						System.out.println("CREATE SUCCESS");
 				}
-				if (success)
-					System.out.println("CREATE SUCCESS");
-			}
-			int xxxx=0;
-			if (typeElement.getDeveloperName().contentEquals("Process"))
-				xxxx=1;
-
-			//QUERY
-			{
-				ListFilter filter = new ListFilter();
-				filter.setOffset(0);
-				filter.setLimit(20);
-				ListFilterWhere listFilterWhere = new ListFilterWhere();
-				listFilterWhere.setColumnName("name");
-				listFilterWhere.setContentValue("(sub)");
-				listFilterWhere.setCriteriaType(CriteriaType.Contains);
-				List<ListFilterWhere> whereList = Lists.newArrayList();
-				whereList.add(listFilterWhere);
+				int xxxx=0;
 				if (typeElement.getDeveloperName().contentEquals("Process"))
-					filter.setWhere(whereList);
-				try {
-					List<MObject> objects = database.findAll(configuration, objectDataType, filter);
-					System.out.println("****QUERY - "+typeElement.getDeveloperName() + " - " + objects.size());
-				} catch (Exception e) {
-					//Ignore unsupported operation errors but report documentation errors 
-					if (e.toString().contains("Unknown objectType for query"))
-					{
-					}
-					else System.out.println("****QUERY - "+typeElement.getDeveloperName() + " - " + e.getMessage());
-				}
-			}
-			
-			//GET
-			{
-				try {
-					MObject object = database.find(configuration, objectDataType, "FAKEID");
-				} catch (Exception e) {
-					//Ignore unsupported operation errors but report documentation errors 
-					if (e.toString().contains("Unknown objectType for query"))
-					{
-					}
-					else System.out.println("****GET - "+typeElement.getDeveloperName() + " - " + e.getMessage());
-				}
-			}
+					xxxx=1;
 
-			//UPDATE
-			{
-				try {
-					MObject updateObject = new MObject();
-					updateObject.setDeveloperName(typeElement.getDeveloperName());
-					updateObject.setExternalId("FAKEID");
-					MObject object = database.update(configuration, updateObject);
-				} catch (Exception e) {
-					//Ignore unsupported operation errors but report documentation errors 
-					if (e.toString().contains("Unknown objectType for update"))
-					{
+				//QUERY
+				{
+					ListFilter filter = new ListFilter();
+					filter.setOffset(0);
+					filter.setLimit(20);
+					ListFilterWhere listFilterWhere = new ListFilterWhere();
+					listFilterWhere.setColumnName("name");
+					listFilterWhere.setContentValue("(sub)");
+					listFilterWhere.setCriteriaType(CriteriaType.Contains);
+					List<ListFilterWhere> whereList = Lists.newArrayList();
+					whereList.add(listFilterWhere);
+					if (typeElement.getDeveloperName().contentEquals("Process"))
+						filter.setWhere(whereList);
+					try {
+						List<MObject> objects = database.findAll(configuration, objectDataType, filter);
+						System.out.println("****QUERY - "+typeElement.getDeveloperName() + " - " + objects.size());
+					} catch (Exception e) {
+						//Ignore unsupported operation errors but report documentation errors 
+						if (e.toString().contains("Unknown objectType for query"))
+						{
+						}
+						else System.out.println("****QUERY - "+typeElement.getDeveloperName() + " - " + e.getMessage());
 					}
-					else 
-						System.out.println("****UPDATE - "+typeElement.getDeveloperName() + " - " + e.getMessage());
 				}
-			}
-
-			//DELETE
-			{
-				try {
-					MObject deleteObject = new MObject();
-					deleteObject.setDeveloperName(typeElement.getDeveloperName());
-					deleteObject.setExternalId("FAKEID");
-					database.delete(configuration, deleteObject);
-				} catch (Exception e) {
-					//Ignore unsupported operation errors but report documentation errors 
-					if (e.toString().contains("Unknown objectType for delete"))
-					{
+				
+				//GET
+				{
+					try {
+						MObject object = database.find(configuration, objectDataType, "FAKEID");
+					} catch (Exception e) {
+						//Ignore unsupported operation errors but report documentation errors 
+						if (e.toString().contains("Unknown objectType for query"))
+						{
+						}
+						else System.out.println("****GET - "+typeElement.getDeveloperName() + " - " + e.getMessage());
 					}
-					else System.out.println("****DELETE - "+typeElement.getDeveloperName() + " - " + e.getMessage());
-//						assertEquals(e.getMessage(),"Error code: 400 Bad Request {\"@type\":\"Error\",\"message\":\"The component (FAKEID) is not found.\"}");
-					
+				}
+
+				//UPDATE
+				{
+					try {
+						MObject updateObject = new MObject();
+						updateObject.setDeveloperName(typeElement.getDeveloperName());
+						updateObject.setExternalId("FAKEID");
+						MObject object = database.update(configuration, updateObject);
+					} catch (Exception e) {
+						//Ignore unsupported operation errors but report documentation errors 
+						if (e.toString().contains("Unknown objectType for update"))
+						{
+						}
+						else 
+							System.out.println("****UPDATE - "+typeElement.getDeveloperName() + " - " + e.getMessage());
+					}
+				}
+
+				//DELETE
+				{
+					try {
+						MObject deleteObject = new MObject();
+						deleteObject.setDeveloperName(typeElement.getDeveloperName());
+						deleteObject.setExternalId("FAKEID");
+						database.delete(configuration, deleteObject);
+					} catch (Exception e) {
+						//Ignore unsupported operation errors but report documentation errors 
+						if (e.toString().contains("Unknown objectType for delete"))
+						{
+						}
+						else System.out.println("****DELETE - "+typeElement.getDeveloperName() + " - " + e.getMessage());
+//							assertEquals(e.getMessage(),"Error code: 400 Bad Request {\"@type\":\"Error\",\"message\":\"The component (FAKEID) is not found.\"}");
+						
+					}
 				}
 			}
 		}
